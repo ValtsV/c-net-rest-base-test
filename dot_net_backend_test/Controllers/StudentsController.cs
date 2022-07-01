@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using dot_net_backend_test.DataAccess;
 using dot_net_backend_test.Models.DataModels;
+using dot_net_backend_test.Services;
 
 namespace dot_net_backend_test.Controllers
 {
@@ -15,20 +16,25 @@ namespace dot_net_backend_test.Controllers
     public class StudentsController : ControllerBase
     {
         private readonly TestDBContext _context;
+        // Service
+        private readonly IStudentService _studentService;
 
-        public StudentsController(TestDBContext context)
+        public StudentsController(TestDBContext context, IStudentService studentService)
         {
             _context = context;
+            _studentService = studentService;
         }
+
+
 
         // GET: api/Students
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
         {
-          if (_context.Students == null)
-          {
-              return NotFound();
-          }
+            if (_context.Students == null)
+            {
+                return NotFound();
+            }
             return await _context.Students.ToListAsync();
         }
 
@@ -36,10 +42,10 @@ namespace dot_net_backend_test.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Student>> GetStudent(int id)
         {
-          if (_context.Students == null)
-          {
-              return NotFound();
-          }
+            if (_context.Students == null)
+            {
+                return NotFound();
+            }
             var student = await _context.Students.FindAsync(id);
 
             if (student == null)
@@ -49,6 +55,23 @@ namespace dot_net_backend_test.Controllers
 
             return student;
         }
+
+        // GET: api/students/courses/1
+        [HttpGet("{id}")]
+        public IEnumerable<Student> GetStudentsByCourseId(int courseId)
+        {
+            var students = _studentService.GetStudentsWhereCourseId(courseId);
+
+            return students;
+        }
+
+        // GET: api/students?courses=0
+        [HttpGet]
+        public IEnumerable<Student> GetStudentsWithNoCourses()
+        {
+            return _studentService.GetStudentsWithNoCourses();
+        }
+
 
         // PUT: api/Students/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

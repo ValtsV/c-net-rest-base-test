@@ -1,6 +1,6 @@
 ﻿using dot_net_backend_test.Models.DataModels;
 
-namespace dot_net_backend_test.Services
+namespace dot_net_backend_test.Services.Implementation
 {
     public class Services : IServices
     {

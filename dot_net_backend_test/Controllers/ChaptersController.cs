@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using dot_net_backend_test.DataAccess;
 using dot_net_backend_test.Models.DataModels;
+using dot_net_backend_test.Services;
 
 namespace dot_net_backend_test.Controllers
 {
@@ -15,10 +16,12 @@ namespace dot_net_backend_test.Controllers
     public class ChaptersController : ControllerBase
     {
         private readonly TestDBContext _context;
+        private readonly IChapterService _chapterService;
 
-        public ChaptersController(TestDBContext context)
+        public ChaptersController(TestDBContext context, IChapterService chapterService)
         {
             _context = context;
+            _chapterService = chapterService;
         }
 
         // GET: api/Chapters
@@ -48,6 +51,13 @@ namespace dot_net_backend_test.Controllers
             }
 
             return chapter;
+        }
+
+        // GET: api/Chapters/courses/1
+        [HttpGet("{id}")]
+        public IEnumerable<Chapter> GetChaptersWithCoursId(int id)
+        {
+            return _chapterService.GetChaptersWhereCourseId(id);
         }
 
         // PUT: api/Chapters/5

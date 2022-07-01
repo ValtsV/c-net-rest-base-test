@@ -14,10 +14,22 @@ builder.Services.AddDbContext<TestDBContext>(options => options.UseSqlServer(con
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IServices, Services>();
+builder.Services.AddScoped<IStudentService, StudentService>();
 
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// CORS (very open one)
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "CorsPolicy", builder =>
+    {
+        builder.AllowAnyOrigin();
+        builder.AllowAnyMethod();
+        builder.AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
@@ -33,5 +45,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors("CorsPolicy");
 
 app.Run();
