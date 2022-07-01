@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using dot_net_backend_test.DataAccess;
+using dot_net_backend_test.Services;
 
 var builder = WebApplication.CreateBuilder(args);
     
@@ -11,7 +12,8 @@ var connectionstring = builder.Configuration.GetConnectionString(CONNECTIONNAME)
 builder.Services.AddDbContext<TestDBContext>(options => options.UseSqlServer(connectionstring));
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+builder.Services.AddScoped<IServices, Services>();
 
 
 builder.Services.AddEndpointsApiExplorer();
