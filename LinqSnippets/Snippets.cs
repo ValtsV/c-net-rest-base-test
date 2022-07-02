@@ -443,7 +443,7 @@ namespace LinqSnippets
             }
         }
 
-        static public void relationsLin1()
+        static public void relationsLinq()
         {
             List<Post> posts = new List<Post>()
             {

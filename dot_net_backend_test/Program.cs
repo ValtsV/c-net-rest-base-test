@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using dot_net_backend_test.DataAccess;
 using dot_net_backend_test.Services;
+using dot_net_backend_test.Services.Implementation;
 
 var builder = WebApplication.CreateBuilder(args);
     
@@ -10,6 +11,8 @@ var connectionstring = builder.Configuration.GetConnectionString(CONNECTIONNAME)
 
 // Add services to the container.
 builder.Services.AddDbContext<TestDBContext>(options => options.UseSqlServer(connectionstring));
+
+builder.Services.AddJwtTokenServices(builder.Configuration);
 
 builder.Services.AddControllers();
 
