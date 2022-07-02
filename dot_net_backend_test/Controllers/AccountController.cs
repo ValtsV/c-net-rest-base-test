@@ -50,16 +50,17 @@ namespace dot_net_backend_test.Controllers
                                   where user.Name == userLogin.UserName && user.Password == userLogin.Password
                                   select user).FirstOrDefault();
 
-                var Valid = Logins.Any(user => user.Name.Equals(userLogin.UserName, StringComparison.OrdinalIgnoreCase));
-                if(Valid)
+
+                //var Valid = Logins.Any(user => user.Name.Equals(userLogin.UserName, StringComparison.OrdinalIgnoreCase));
+                if(searchUser != null)
                 {
                     var user = Logins.FirstOrDefault(user => user.Name.Equals(userLogin.UserName, StringComparison.OrdinalIgnoreCase));
 
                     Token = JwtHelpers.GenerateTokenKey(new UserTokens()
                     {
-                        UserName = user.Name,
-                        EmailId = user.Email,
-                        Id = user.Id,
+                        UserName = searchUser.Name,
+                        EmailId = searchUser.Email,
+                        Id = searchUser.Id,
                         GuidId = Guid.NewGuid()
                     }, _jwtSettings);
                 } else
