@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using dot_net_backend_test.DataAccess;
 using dot_net_backend_test.Models.DataModels;
 using dot_net_backend_test.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace dot_net_backend_test.Controllers
 {
@@ -54,21 +56,21 @@ namespace dot_net_backend_test.Controllers
         }
 
         // GET: api/Courses/students/1
-        [HttpGet("{id}")]
+        [HttpGet("GetCoursesWhereStudentId/{id}")]
         public  IEnumerable<Course> GetCoursesWhereStudentId(int id)
         {
             return _courseService.GetCoursesWhereStudentId(id);
         }
 
         // GET: api/Courses/category/1
-        [HttpGet("{id}")]
+        [HttpGet("GetCoursesWithCategoryId/{id}")]
         public IEnumerable<Course> GetCoursesWithCategoryId(int id)
         {
             return _courseService.GetCoursesWithCategoryId(id);
         }
 
         // GET: api/Courses/chapters?count=0
-        [HttpGet]
+        [HttpGet("GetCoursesWithNoChapters")]
         public IEnumerable<Course> GetCoursesWithNoChapters()
         {
             return _courseService.GetCoursesWithNoChapters();
@@ -77,6 +79,8 @@ namespace dot_net_backend_test.Controllers
         // PUT: api/Courses/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+
         public async Task<IActionResult> PutCourse(int id, Course course)
         {
             if (id != course.Id)
@@ -108,6 +112,8 @@ namespace dot_net_backend_test.Controllers
         // POST: api/Courses
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+
         public async Task<ActionResult<Course>> PostCourse(Course course)
         {
           if (_context.Courses == null)
@@ -122,6 +128,8 @@ namespace dot_net_backend_test.Controllers
 
         // DELETE: api/Courses/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+
         public async Task<IActionResult> DeleteCourse(int id)
         {
             if (_context.Courses == null)

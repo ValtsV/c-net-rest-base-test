@@ -57,7 +57,7 @@ namespace dot_net_backend_test.Controllers
         }
 
         // GET: api/students/courses/1
-        [HttpGet("{id}")]
+        [HttpGet("GetStudentsByCourseId/{id}")]
         public IEnumerable<Student> GetStudentsByCourseId(int courseId)
         {
             var students = _studentService.GetStudentsWhereCourseId(courseId);
@@ -66,7 +66,7 @@ namespace dot_net_backend_test.Controllers
         }
 
         // GET: api/students?courses=0
-        [HttpGet]
+        [HttpGet("GetStudentsWithNoCourses")]
         public IEnumerable<Student> GetStudentsWithNoCourses()
         {
             return _studentService.GetStudentsWithNoCourses();

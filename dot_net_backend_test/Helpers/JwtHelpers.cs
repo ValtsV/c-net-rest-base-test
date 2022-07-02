@@ -20,11 +20,11 @@ namespace dot_net_backend_test.Helpers
 
             if(userAccounts.UserName == "Admin")
             {
-                claims.Add(new Claim(ClaimTypes.Role, "ADministrator"));
-            } else if (userAccounts.UserName == "User 1")
+                claims.Add(new Claim(ClaimTypes.Role, "Administrator"));
+            } else if (userAccounts.UserName == "User1")
             {
                 claims.Add(new Claim(ClaimTypes.Role, "User"));
-                claims.Add(new Claim("UserOnly", "User 1"));
+                claims.Add(new Claim("UserOnly", "User1"));
             }
 
             return claims;

@@ -1,4 +1,5 @@
-﻿using dot_net_backend_test.Helpers;
+﻿using dot_net_backend_test.DataAccess;
+using dot_net_backend_test.Helpers;
 using dot_net_backend_test.Models.DataModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -12,10 +13,12 @@ namespace dot_net_backend_test.Controllers
     public class AccountController : ControllerBase
     {
         private readonly JwtSettings _jwtSettings;
+        private readonly TestDBContext _context;
 
-        public AccountController(JwtSettings jwtSettings)
+        public AccountController(JwtSettings jwtSettings, TestDBContext context)
         {
             this._jwtSettings = jwtSettings;
+            this._context = context;
         }
 
         private IEnumerable<User> Logins = new List<User>()
@@ -25,7 +28,7 @@ namespace dot_net_backend_test.Controllers
                 Id = 1,
                 Email = "martin@mail.com",
                 Name = "Admin",
-                Password = "Admin"
+                Password = "admin"
             },
             new User()
             {
@@ -42,6 +45,11 @@ namespace dot_net_backend_test.Controllers
             try
             {
                 var Token = new UserTokens();
+
+                var searchUser = (from user in _context.Users
+                                  where user.Name == userLogin.UserName && user.Password == userLogin.Password
+                                  select user).FirstOrDefault();
+
                 var Valid = Logins.Any(user => user.Name.Equals(userLogin.UserName, StringComparison.OrdinalIgnoreCase));
                 if(Valid)
                 {

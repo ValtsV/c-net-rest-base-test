@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using dot_net_backend_test.DataAccess;
 using dot_net_backend_test.Models.DataModels;
 using dot_net_backend_test.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace dot_net_backend_test.Controllers
 {
@@ -53,16 +55,18 @@ namespace dot_net_backend_test.Controllers
             return chapter;
         }
 
-        // GET: api/Chapters/courses/1
-        [HttpGet("{id}")]
-        public IEnumerable<Chapter> GetChaptersWithCoursId(int id)
+        // GET: api/Chapters/Courses/1
+        [HttpGet("GetChaptersWithCourseId/{courseId}")]
+        public IEnumerable<Chapter> GetChaptersWithCourseId(int courseId)
         {
-            return _chapterService.GetChaptersWhereCourseId(id);
+            return _chapterService.GetChaptersWhereCourseId(courseId);
         }
 
         // PUT: api/Chapters/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+
         public async Task<IActionResult> PutChapter(int id, Chapter chapter)
         {
             if (id != chapter.Id)
@@ -94,6 +98,8 @@ namespace dot_net_backend_test.Controllers
         // POST: api/Chapters
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+
         public async Task<ActionResult<Chapter>> PostChapter(Chapter chapter)
         {
           if (_context.Chapters == null)
@@ -108,6 +114,8 @@ namespace dot_net_backend_test.Controllers
 
         // DELETE: api/Chapters/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+
         public async Task<IActionResult> DeleteChapter(int id)
         {
             if (_context.Chapters == null)
