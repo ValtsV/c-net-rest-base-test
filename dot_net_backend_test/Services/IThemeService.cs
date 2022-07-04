@@ -2,8 +2,8 @@
 
 namespace dot_net_backend_test.Services
 {
-    public interface IChapterService
+    public interface IThemeService
     {
-        IEnumerable<Chapter> GetChaptersWhereCourseId(int courseId);
+        IEnumerable<Theme> GetThemesWhereCourseId(int courseId);
     }
 }

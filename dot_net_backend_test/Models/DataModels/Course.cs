@@ -25,8 +25,7 @@ namespace dot_net_backend_test.Models.DataModels
         [Required]
         public ICollection<Student> Students { get; set; } = new List<Student>();
         [Required]
-        [JsonIgnore]
-        public Chapter Chapter { get; set; } = new Chapter();
+        public Chapters Chapters { get; set; } = new Chapters();
 
     }
 }

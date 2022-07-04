@@ -18,17 +18,17 @@ namespace dot_net_backend_test.Controllers
     public class ChaptersController : ControllerBase
     {
         private readonly TestDBContext _context;
-        private readonly IChapterService _chapterService;
+        private readonly IThemeService _themeService;
 
-        public ChaptersController(TestDBContext context, IChapterService chapterService)
+        public ChaptersController(TestDBContext context, IThemeService themeService)
         {
             _context = context;
-            _chapterService = chapterService;
+            _themeService = themeService;
         }
 
         // GET: api/Chapters
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Chapter>>> GetChapters()
+        public async Task<ActionResult<IEnumerable<Chapters>>> GetChapters()
         {
           if (_context.Chapters == null)
           {
@@ -39,7 +39,7 @@ namespace dot_net_backend_test.Controllers
 
         // GET: api/Chapters/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Chapter>> GetChapter(int id)
+        public async Task<ActionResult<Chapters>> GetChapter(int id)
         {
           if (_context.Chapters == null)
           {
@@ -56,10 +56,10 @@ namespace dot_net_backend_test.Controllers
         }
 
         // GET: api/Chapters/Courses/1
-        [HttpGet("GetChaptersWithCourseId/{courseId}")]
-        public IEnumerable<Chapter> GetChaptersWithCourseId(int courseId)
+        [HttpGet("GetThemesWhereCourseId/{courseId}")]
+        public IEnumerable<Theme> GetThemesWhereCourseId(int courseId)
         {
-            return _chapterService.GetChaptersWhereCourseId(courseId);
+            return _themeService.GetThemesWhereCourseId(courseId);
         }
 
         // PUT: api/Chapters/5
@@ -67,7 +67,7 @@ namespace dot_net_backend_test.Controllers
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
 
-        public async Task<IActionResult> PutChapter(int id, Chapter chapter)
+        public async Task<IActionResult> PutChapter(int id, Chapters chapter)
         {
             if (id != chapter.Id)
             {
@@ -100,7 +100,7 @@ namespace dot_net_backend_test.Controllers
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
 
-        public async Task<ActionResult<Chapter>> PostChapter(Chapter chapter)
+        public async Task<ActionResult<Chapters>> PostChapter(Chapters chapter)
         {
           if (_context.Chapters == null)
           {

@@ -21,7 +21,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IServices, Services>();
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
-builder.Services.AddScoped<IChapterService, ChapterService>();
+builder.Services.AddScoped<IThemeService, ThemeService>();
 
 
 builder.Services.AddAuthorization(options =>
@@ -39,7 +39,7 @@ builder.Services.AddSwaggerGen(options =>
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "JWT Authorization Header using Bearer Scheme"
+        Description = "JWT Authorization Header using Bearer Scheme (username: Admin | password: admin) -> use Account Post method to get access token"
     });
 
     options.AddSecurityRequirement(new OpenApiSecurityRequirement

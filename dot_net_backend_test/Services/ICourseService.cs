@@ -4,9 +4,9 @@ namespace dot_net_backend_test.Services
 {
     public interface ICourseService
     {
-        IEnumerable<Course> GetCoursesWithCategoryId(int categoryId);
+        IEnumerable<Course> GetCoursesWhereCategoryId(int categoryId);
 
-        IEnumerable<Course> GetCoursesWithNoChapters();
+        IEnumerable<Course> GetCoursesWithNoThemes();
 
         IEnumerable<Course> GetCoursesWhereStudentId(int studentId);
     }

@@ -66,14 +66,14 @@ namespace dot_net_backend_test.Controllers
         [HttpGet("GetCoursesWithCategoryId/{id}")]
         public IEnumerable<Course> GetCoursesWithCategoryId(int id)
         {
-            return _courseService.GetCoursesWithCategoryId(id);
+            return _courseService.GetCoursesWhereCategoryId(id);
         }
 
-        // GET: api/Courses/chapters?count=0
-        [HttpGet("GetCoursesWithNoChapters")]
-        public IEnumerable<Course> GetCoursesWithNoChapters()
+        // GET: api/Courses/chapters/themes?count=0
+        [HttpGet("GetCoursesWithNoThemes")]
+        public IEnumerable<Course> GetCoursesWithNoThemes()
         {
-            return _courseService.GetCoursesWithNoChapters();
+            return _courseService.GetCoursesWithNoThemes();
         }
 
         // PUT: api/Courses/5
