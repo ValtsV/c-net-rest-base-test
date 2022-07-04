@@ -15,9 +15,9 @@ namespace dot_net_backend_test.Services
 
         IEnumerable<Student> GetStudentsWithOneOrMoreCourses();
 
-        IEnumerable<Course> GetCoursesWithLevelAndHasStudents(Level level);
+        IEnumerable<Course> GetCoursesWithLevelAndHasStudents(int level);
 
-        IEnumerable<Course> GetCoursesWithLevelAndCategory(Level level, Category category);
+        IEnumerable<Course> GetCoursesWithLevelAndCategory(int level, int categoryId);
 
         IEnumerable<Course> GetCoursesWithNoStudents();
     }

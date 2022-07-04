@@ -51,7 +51,8 @@ namespace dot_net_backend_test.Controllers
                                   select user).FirstOrDefault();
 
                 var Valid = Logins.Any(user => user.Name.Equals(userLogin.UserName, StringComparison.OrdinalIgnoreCase));
-                if(Valid)
+                if (Valid)
+                //if (searchUser != null)
                 {
                     var user = Logins.FirstOrDefault(user => user.Name.Equals(userLogin.UserName, StringComparison.OrdinalIgnoreCase));
 

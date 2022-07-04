@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using dot_net_backend_test.DataAccess;
 using dot_net_backend_test.Models.DataModels;
 using dot_net_backend_test.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace dot_net_backend_test.Controllers
 {
@@ -76,6 +78,7 @@ namespace dot_net_backend_test.Controllers
         // PUT: api/Students/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<IActionResult> PutStudent(int id, Student student)
         {
             if (id != student.Id)
@@ -107,6 +110,7 @@ namespace dot_net_backend_test.Controllers
         // POST: api/Students
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<ActionResult<Student>> PostStudent(Student student)
         {
           if (_context.Students == null)
@@ -121,6 +125,7 @@ namespace dot_net_backend_test.Controllers
 
         // DELETE: api/Students/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public async Task<IActionResult> DeleteStudent(int id)
         {
             if (_context.Students == null)

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace dot_net_backend_test.Models.DataModels
 {
@@ -10,7 +11,7 @@ namespace dot_net_backend_test.Models.DataModels
         public string LastName { get; set; } = string.Empty;
         [Required]
         public DateTime Dob { get; set; }
-
+        
         public ICollection<Course> Courses { get; set; } = new List<Course>();
     }
 }
