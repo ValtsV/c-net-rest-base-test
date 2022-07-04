@@ -4,7 +4,7 @@
 
 namespace dot_net_backend_test.Migrations
 {
-    public partial class CreateCategorytable : Migration
+    public partial class CreateStudentTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

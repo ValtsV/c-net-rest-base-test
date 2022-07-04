@@ -8,6 +8,7 @@
         public TimeSpan Validity { get; set; }
         public string RefreshToken { get; set; }
         public string EmailId { get; set; }
+        public Role Role { get; set; } //
         public Guid GuidId { get; set; }
         public DateTime ExpiredTime { get; set; }
     }

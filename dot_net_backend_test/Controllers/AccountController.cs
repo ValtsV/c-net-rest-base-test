@@ -21,24 +21,6 @@ namespace dot_net_backend_test.Controllers
             this._context = context;
         }
 
-        private IEnumerable<User> Logins = new List<User>()
-        {
-            new User()
-            {
-                Id = 1,
-                Email = "martin@mail.com",
-                Name = "Admin",
-                Password = "admin"
-            },
-            new User()
-            {
-                Id = 2,
-                Email = "pepe@mail.com",
-                Name = "User1",
-                Password = "pepe"
-            },
-        };
-
         
         [HttpPost]
         public IActionResult GetToken(UserLogins userLogin)
@@ -47,21 +29,20 @@ namespace dot_net_backend_test.Controllers
             {
                 var Token = new UserTokens();
 
-                var searchUser = (from user in _context.Users
+                var currentUser = (from user in _context.Users
                                   where user.Name == userLogin.UserName && user.Password == userLogin.Password
                                   select user).FirstOrDefault();
 
-                var Valid = Logins.Any(user => user.Name.Equals(userLogin.UserName, StringComparison.OrdinalIgnoreCase));
-                if (Valid)
-                //if (searchUser != null)
+                
+                if (currentUser != null)
                 {
-                    var user = Logins.FirstOrDefault(user => user.Name.Equals(userLogin.UserName, StringComparison.OrdinalIgnoreCase));
-
+                   
                     Token = JwtHelpers.GenerateTokenKey(new UserTokens()
                     {
-                        UserName = user.Name,
-                        EmailId = user.Email,
-                        Id = user.Id,
+                        UserName = currentUser.Name,
+                        EmailId = currentUser.Email,
+                        Id = currentUser.Id,
+                        Role = currentUser.Role,
                         GuidId = Guid.NewGuid()
                     }, _jwtSettings);
                 } else
@@ -78,10 +59,10 @@ namespace dot_net_backend_test.Controllers
         }
 
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public IActionResult GetUserList()
         {
-            return Ok(Logins);
+            return Ok();
         }
     }
 }

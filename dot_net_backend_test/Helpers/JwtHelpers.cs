@@ -18,13 +18,21 @@ namespace dot_net_backend_test.Helpers
                 new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddDays(1).ToString("MMM ddd dd yyyy HH:mm:ss tt"))
             };
 
-            if(userAccounts.UserName == "Admin")
+            //if(userAccounts.UserName == "Admin")
+            //{
+            //    claims.Add(new Claim(ClaimTypes.Role, "Administrator"));
+            //} else if (userAccounts.UserName == "User1")
+            //{
+            //    claims.Add(new Claim(ClaimTypes.Role, "User"));
+            //    claims.Add(new Claim("UserOnly", "User1"));
+            //}
+
+            if (userAccounts.Role == 0)
             {
-                claims.Add(new Claim(ClaimTypes.Role, "Administrator"));
-            } else if (userAccounts.UserName == "User1")
+                claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+            } else
             {
                 claims.Add(new Claim(ClaimTypes.Role, "User"));
-                claims.Add(new Claim("UserOnly", "User1"));
             }
 
             return claims;
@@ -69,6 +77,7 @@ namespace dot_net_backend_test.Helpers
                 userToken.Token = new JwtSecurityTokenHandler().WriteToken(jwToken);
                 userToken.UserName = model.UserName;
                 userToken.Id = model.Id;
+                userToken.Role = model.Role;
                 userToken.GuidId = Id;
                 return userToken;
             }

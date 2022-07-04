@@ -12,8 +12,8 @@ using dot_net_backend_test.DataAccess;
 namespace dot_net_backend_test.Migrations
 {
     [DbContext(typeof(TestDBContext))]
-    [Migration("20220630131603_Create Category table")]
-    partial class CreateCategorytable
+    [Migration("20220704153335_Create Student Table")]
+    partial class CreateStudentTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -91,7 +91,7 @@ namespace dot_net_backend_test.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("dot_net_backend_test.Models.DataModels.Chapter", b =>
+            modelBuilder.Entity("dot_net_backend_test.Models.DataModels.Chapters", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -224,6 +224,52 @@ namespace dot_net_backend_test.Migrations
                     b.ToTable("Students");
                 });
 
+            modelBuilder.Entity("dot_net_backend_test.Models.DataModels.Theme", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ChaptersId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChaptersId");
+
+                    b.ToTable("Themes");
+                });
+
             modelBuilder.Entity("dot_net_backend_test.Models.DataModels.User", b =>
                 {
                     b.Property<int>("Id")
@@ -262,6 +308,9 @@ namespace dot_net_backend_test.Migrations
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -305,20 +354,36 @@ namespace dot_net_backend_test.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("dot_net_backend_test.Models.DataModels.Chapter", b =>
+            modelBuilder.Entity("dot_net_backend_test.Models.DataModels.Chapters", b =>
                 {
                     b.HasOne("dot_net_backend_test.Models.DataModels.Course", "Course")
-                        .WithOne("Chapter")
-                        .HasForeignKey("dot_net_backend_test.Models.DataModels.Chapter", "CourseId")
+                        .WithOne("Chapters")
+                        .HasForeignKey("dot_net_backend_test.Models.DataModels.Chapters", "CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Course");
                 });
 
+            modelBuilder.Entity("dot_net_backend_test.Models.DataModels.Theme", b =>
+                {
+                    b.HasOne("dot_net_backend_test.Models.DataModels.Chapters", "Chapters")
+                        .WithMany("Themes")
+                        .HasForeignKey("ChaptersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Chapters");
+                });
+
+            modelBuilder.Entity("dot_net_backend_test.Models.DataModels.Chapters", b =>
+                {
+                    b.Navigation("Themes");
+                });
+
             modelBuilder.Entity("dot_net_backend_test.Models.DataModels.Course", b =>
                 {
-                    b.Navigation("Chapter")
+                    b.Navigation("Chapters")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

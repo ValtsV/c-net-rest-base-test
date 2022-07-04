@@ -5,14 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace dot_net_backend_test.Migrations
 {
-    public partial class CreateCoursetable : Migration
+    public partial class CreateCategorytable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "CreatedBy",
-                table: "Users");
-
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
@@ -73,6 +69,29 @@ namespace dot_net_backend_test.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Students", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Role = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -148,6 +167,33 @@ namespace dot_net_backend_test.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Themes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ChaptersId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Themes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Themes_Chapters_ChaptersId",
+                        column: x => x.ChaptersId,
+                        principalTable: "Chapters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_CategoryCourse_CoursesId",
                 table: "CategoryCourse",
@@ -163,6 +209,11 @@ namespace dot_net_backend_test.Migrations
                 name: "IX_CourseStudent_StudentsId",
                 table: "CourseStudent",
                 column: "StudentsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Themes_ChaptersId",
+                table: "Themes",
+                column: "ChaptersId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -171,26 +222,25 @@ namespace dot_net_backend_test.Migrations
                 name: "CategoryCourse");
 
             migrationBuilder.DropTable(
-                name: "Chapters");
+                name: "CourseStudent");
 
             migrationBuilder.DropTable(
-                name: "CourseStudent");
+                name: "Themes");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Courses");
-
-            migrationBuilder.DropTable(
                 name: "Students");
 
-            migrationBuilder.AddColumn<string>(
-                name: "CreatedBy",
-                table: "Users",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
+            migrationBuilder.DropTable(
+                name: "Chapters");
+
+            migrationBuilder.DropTable(
+                name: "Courses");
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using dot_net_backend_test.Models.DataModels;
 using dot_net_backend_test.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
