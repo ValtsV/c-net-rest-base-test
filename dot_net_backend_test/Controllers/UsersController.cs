@@ -50,6 +50,24 @@ namespace dot_net_backend_test.Controllers
             return user;
         }
 
+        // GET: api/Users/role/{role}
+        [HttpGet("GetUserByRole/{role}")]
+        public async Task<ActionResult<IEnumerable<User>>> GetUsersByRole(int role)
+        {
+            if (_context.Users == null)
+            {
+                return NotFound();
+            }
+            var user = await _context.Users.Where(user => (int)user.Role == role).ToListAsync();
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return user;
+        }
+
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
