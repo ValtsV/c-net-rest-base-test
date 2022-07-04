@@ -62,7 +62,8 @@ namespace dot_net_backend_test.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public IActionResult GetUserList()
         {
-            return Ok();
+            var users = from user in _context.Users select user;
+            return Ok(users);
         }
     }
 }
