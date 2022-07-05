@@ -122,7 +122,7 @@ namespace dot_net_backend_test.Controllers
         {
           if (_context.Courses == null)
           {
-                _logger.LogError($"{nameof(CoursesController)} - {nameof(PostCourse)} - Entity set 'TestDBContext.Courses' is null.);
+                _logger.LogError($"{nameof(CoursesController)} - {nameof(PostCourse)} - Entity set 'TestDBContext.Courses' is null.");
 
               return Problem("Entity set 'TestDBContext.Courses'  is null.");
           }

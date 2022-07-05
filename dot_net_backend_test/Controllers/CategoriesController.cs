@@ -99,7 +99,7 @@ namespace dot_net_backend_test.Controllers
         {
           if (_context.Categories == null)
           {
-                _logger.LogError($"{nameof(CategoriesController)} - {nameof(PutCategory)} - Entity set 'TestDBContext.Categories' is null.);
+                _logger.LogError($"{nameof(CategoriesController)} - {nameof(PutCategory)} - Entity set 'TestDBContext.Categories' is null.");
 
                 return Problem("Entity set 'TestDBContext.Categories'  is null.");
           }
