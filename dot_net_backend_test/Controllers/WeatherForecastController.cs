@@ -21,9 +21,15 @@ namespace dot_net_backend_test.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
         public IEnumerable<WeatherForecast> Get()
         {
+            //_logger.LogTrace($"{nameof(WeatherForecastController)} - {nameof(Get)} - Trace Log Level");
+            //_logger.LogDebug($"{nameof(WeatherForecastController)} - {nameof(Get)} - Debug Log Level");
+            //_logger.LogInformation($"{nameof(WeatherForecastController)} - {nameof(Get)} - Information Level Log");
+            _logger.LogWarning($"{nameof(WeatherForecastController)} - {nameof(Get)} - Warning Level Log");
+            _logger.LogError($"{nameof(WeatherForecastController)} - {nameof(Get)} - Error Level Log");
+            _logger.LogCritical($"{nameof(WeatherForecastController)} - {nameof(Get)} - Critical Level Log");
+
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),

@@ -19,11 +19,14 @@ namespace dot_net_backend_test.Controllers
     {
         private readonly TestDBContext _context;
         private readonly IThemeService _themeService;
+        private readonly ILogger<ChaptersController> _logger;
 
-        public ChaptersController(TestDBContext context, IThemeService themeService)
+
+        public ChaptersController(TestDBContext context, IThemeService themeService, ILogger<ChaptersController> logger)
         {
             _context = context;
             _themeService = themeService;
+            _logger = logger;
         }
 
         // GET: api/Chapters
@@ -32,7 +35,7 @@ namespace dot_net_backend_test.Controllers
         {
           if (_context.Chapters == null)
           {
-              return NotFound();
+                return NotFound();
           }
             return await _context.Chapters.ToListAsync();
         }
@@ -43,7 +46,7 @@ namespace dot_net_backend_test.Controllers
         {
           if (_context.Chapters == null)
           {
-              return NotFound();
+                return NotFound();
           }
             var chapter = await _context.Chapters.FindAsync(id);
 
@@ -80,7 +83,7 @@ namespace dot_net_backend_test.Controllers
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
                 if (!ChapterExists(id))
                 {
@@ -88,6 +91,7 @@ namespace dot_net_backend_test.Controllers
                 }
                 else
                 {
+                    _logger.LogError(ex, $"{nameof(CategoriesController)} - {nameof(GetChapters)} - Couldn't update category with id {id}");
                     throw;
                 }
             }
@@ -104,7 +108,9 @@ namespace dot_net_backend_test.Controllers
         {
           if (_context.Chapters == null)
           {
-              return Problem("Entity set 'TestDBContext.Chapters'  is null.");
+                _logger.LogError($"{nameof(CategoriesController)} - {nameof(GetChapter)} - Entity set 'TestDBContext.Chapters'  is null.");
+
+                return Problem("Entity set 'TestDBContext.Chapters'  is null.");
           }
             _context.Chapters.Add(chapter);
             await _context.SaveChangesAsync();

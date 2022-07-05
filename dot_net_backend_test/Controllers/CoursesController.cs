@@ -19,11 +19,13 @@ namespace dot_net_backend_test.Controllers
     {
         private readonly TestDBContext _context;
         private readonly ICourseService _courseService;
+        private readonly ILogger<ChaptersController> _logger;
 
-        public CoursesController(TestDBContext context, ICourseService courseService)
+        public CoursesController(TestDBContext context, ICourseService courseService, ILogger<ChaptersController> logger)
         {
             _context = context;
             _courseService = courseService;
+            _logger = logger;
         }
 
         // GET: api/Courses
@@ -94,14 +96,16 @@ namespace dot_net_backend_test.Controllers
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
                 if (!CourseExists(id))
                 {
+                    _logger.LogError($"{nameof(CoursesController)} - {nameof(PutCourse)} - Couldn't update course with id {id}");
                     return NotFound();
                 }
                 else
                 {
+                    _logger.LogError(ex, $"{nameof(CoursesController)} - {nameof(PutCourse)} - Couldn't update course with id {id}");
                     throw;
                 }
             }
@@ -118,6 +122,8 @@ namespace dot_net_backend_test.Controllers
         {
           if (_context.Courses == null)
           {
+                _logger.LogError($"{nameof(CoursesController)} - {nameof(PostCourse)} - Entity set 'TestDBContext.Courses' is null.);
+
               return Problem("Entity set 'TestDBContext.Courses'  is null.");
           }
             _context.Courses.Add(course);

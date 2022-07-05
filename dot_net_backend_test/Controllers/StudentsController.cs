@@ -18,13 +18,15 @@ namespace dot_net_backend_test.Controllers
     public class StudentsController : ControllerBase
     {
         private readonly TestDBContext _context;
-        // Service
         private readonly IStudentService _studentService;
+        private readonly ILogger<StudentsController> _logger;
 
-        public StudentsController(TestDBContext context, IStudentService studentService)
+
+        public StudentsController(TestDBContext context, IStudentService studentService, ILogger<StudentsController> logger)
         {
             _context = context;
             _studentService = studentService;
+            _logger = logger;
         }
 
 
@@ -92,14 +94,18 @@ namespace dot_net_backend_test.Controllers
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
                 if (!StudentExists(id))
                 {
+                    _logger.LogWarning($"{nameof(StudentsController)} - {nameof(PutStudent)} - Couldn't update student with id {id}");
+
                     return NotFound();
                 }
                 else
                 {
+                    _logger.LogError(ex, $"{nameof(StudentsController)} - {nameof(PutStudent)} - Couldn't update student with id {id}");
+
                     throw;
                 }
             }
@@ -115,7 +121,9 @@ namespace dot_net_backend_test.Controllers
         {
           if (_context.Students == null)
           {
-              return Problem("Entity set 'TestDBContext.Students'  is null.");
+                _logger.LogError($"{nameof(StudentsController)} - {nameof(PutStudent)} - Entity set 'TestDBContext.Students'  is null.");
+
+                return Problem("Entity set 'TestDBContext.Students'  is null.");
           }
             _context.Students.Add(student);
             await _context.SaveChangesAsync();

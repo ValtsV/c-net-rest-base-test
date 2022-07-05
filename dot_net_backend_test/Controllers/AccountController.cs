@@ -16,19 +16,22 @@ namespace dot_net_backend_test.Controllers
         private readonly JwtSettings _jwtSettings;
         private readonly TestDBContext _context;
         private readonly IStringLocalizer<AccountController> _stringLocalizer;
-     
+        private readonly ILogger<AccountController> _logger;
+
 
         public AccountController(
             JwtSettings jwtSettings, 
-            TestDBContext context, 
-            IStringLocalizer<AccountController> stringLocalizer)
+            TestDBContext context,
+            IStringLocalizer<AccountController> stringLocalizer,
+            ILogger<AccountController> logger)
         {
             _jwtSettings = jwtSettings;
             _context = context;
             _stringLocalizer = stringLocalizer;
+            _logger = logger;
         }
 
-        
+
         [HttpPost]
         public IActionResult GetToken(UserLogins userLogin)
         {
@@ -57,6 +60,7 @@ namespace dot_net_backend_test.Controllers
                 } else
                 {
                     var badCredentials = _stringLocalizer.GetString("BadCredentials").Value ?? String.Empty;
+                    _logger.LogInformation($"{nameof(AccountController)} - {nameof(GetToken)} - Unsuccessful Login Atempt for user {userLogin.UserName}");
 
                     return BadRequest(badCredentials);
                 }
@@ -67,7 +71,9 @@ namespace dot_net_backend_test.Controllers
                 });
             }
             catch (Exception ex)
+
             {
+                _logger.LogError(ex, $"{nameof(WeatherForecastController)} - {nameof(GetToken)}");
 
                 throw new Exception("GetToken Error", ex);
             }

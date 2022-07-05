@@ -15,10 +15,12 @@ namespace dot_net_backend_test.Controllers
     public class UsersController : ControllerBase
     {
         private readonly TestDBContext _context;
+        private readonly ILogger<UsersController> _logger;
 
-        public UsersController(TestDBContext context)
+        public UsersController(TestDBContext context, ILogger<UsersController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: api/Users
@@ -85,14 +87,17 @@ namespace dot_net_backend_test.Controllers
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
                 if (!UserExists(id))
                 {
+                    _logger.LogWarning($"{nameof(UsersController)} - {nameof(PutUser)} - Couldn't update user with id {id}");
+
                     return NotFound();
                 }
                 else
                 {
+                    _logger.LogError(ex, $"{nameof(UsersController)} - {nameof(PutUser)} - Couldn't update user with id {id}");
                     throw;
                 }
             }
@@ -107,7 +112,8 @@ namespace dot_net_backend_test.Controllers
         {
           if (_context.Users == null)
           {
-              return Problem("Entity set 'TestDBContext.Users'  is null.");
+                _logger.LogError($"{nameof(UsersController)} - {nameof(PutUser)} - Entity set 'TestDBContext.Users'  is null.");
+                return Problem("Entity set 'TestDBContext.Users'  is null.");
           }
             _context.Users.Add(user);
             await _context.SaveChangesAsync();

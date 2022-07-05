@@ -4,8 +4,18 @@ using dot_net_backend_test.Services;
 using dot_net_backend_test.Services.Implementation;
 using dot_net_backend_test;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// serilog
+builder.Host.UseSerilog((hostBuilderCtx, loggerConf) =>
+{
+    loggerConf
+    .WriteTo.Console()
+    .WriteTo.Debug()
+    .ReadFrom.Configuration(hostBuilderCtx.Configuration);
+});
     
 const string CONNECTIONNAME = "TestDB";
 var connectionstring = builder.Configuration.GetConnectionString(CONNECTIONNAME);
@@ -87,6 +97,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 

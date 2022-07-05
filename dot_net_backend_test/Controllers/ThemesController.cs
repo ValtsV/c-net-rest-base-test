@@ -17,10 +17,12 @@ namespace dot_net_backend_test.Controllers
     public class ThemesController : ControllerBase
     {
         private readonly TestDBContext _context;
+        private readonly ILogger<StudentsController> _logger;
 
-        public ThemesController(TestDBContext context)
+        public ThemesController(TestDBContext context, ILogger<StudentsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: api/Themes
@@ -70,14 +72,18 @@ namespace dot_net_backend_test.Controllers
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
                 if (!ThemeExists(id))
                 {
+                    _logger.LogWarning($"{nameof(ThemesController)} - {nameof(PutTheme)} - Couldn't update theme with id {id}");
+
                     return NotFound();
                 }
                 else
                 {
+                    _logger.LogError(ex, $"{nameof(ThemesController)} - {nameof(PutTheme)} - Couldn't update theme with id {id}");
+
                     throw;
                 }
             }
@@ -94,7 +100,9 @@ namespace dot_net_backend_test.Controllers
         {
           if (_context.Themes == null)
           {
-              return Problem("Entity set 'TestDBContext.Themes'  is null.");
+                _logger.LogError($"{nameof(ThemesController)} - {nameof(PutTheme)} - Entity set 'TestDBContext.Themes'  is null.");
+
+                return Problem("Entity set 'TestDBContext.Themes'  is null.");
           }
             _context.Themes.Add(theme);
             await _context.SaveChangesAsync();

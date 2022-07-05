@@ -17,10 +17,13 @@ namespace dot_net_backend_test.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly TestDBContext _context;
+        private readonly ILogger<CategoriesController> _logger;
 
-        public CategoriesController(TestDBContext context)
+
+        public CategoriesController(TestDBContext context, ILogger<CategoriesController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: api/Categories
@@ -29,7 +32,7 @@ namespace dot_net_backend_test.Controllers
         {
           if (_context.Categories == null)
           {
-              return NotFound();
+                return NotFound();
           }
             return await _context.Categories.ToListAsync();
         }
@@ -40,7 +43,7 @@ namespace dot_net_backend_test.Controllers
         {
           if (_context.Categories == null)
           {
-              return NotFound();
+                return NotFound();
           }
             var category = await _context.Categories.FindAsync(id);
 
@@ -70,14 +73,16 @@ namespace dot_net_backend_test.Controllers
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
                 if (!CategoryExists(id))
                 {
+                    _logger.LogWarning($"{nameof(CategoriesController)} - {nameof(PutCategory)} - Couldn't update category with id {id}");
                     return NotFound();
                 }
                 else
                 {
+                    _logger.LogError(ex, $"{nameof(CategoriesController)} - {nameof(PutCategory)} - Couldn't update category with id {id}");
                     throw;
                 }
             }
@@ -94,7 +99,9 @@ namespace dot_net_backend_test.Controllers
         {
           if (_context.Categories == null)
           {
-              return Problem("Entity set 'TestDBContext.Categories'  is null.");
+                _logger.LogError($"{nameof(CategoriesController)} - {nameof(PutCategory)} - Entity set 'TestDBContext.Categories' is null.);
+
+                return Problem("Entity set 'TestDBContext.Categories'  is null.");
           }
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
