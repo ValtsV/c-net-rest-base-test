@@ -65,7 +65,7 @@ namespace dot_net_backend_test.Controllers
         // PUT: api/Chapters/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
 
         public async Task<IActionResult> PutChapter(int id, Chapters chapter)
         {
@@ -98,7 +98,7 @@ namespace dot_net_backend_test.Controllers
         // POST: api/Chapters
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
 
         public async Task<ActionResult<Chapters>> PostChapter(Chapters chapter)
         {
@@ -114,7 +114,7 @@ namespace dot_net_backend_test.Controllers
 
         // DELETE: api/Chapters/5
         [HttpDelete("{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
 
         public async Task<IActionResult> DeleteChapter(int id)
         {

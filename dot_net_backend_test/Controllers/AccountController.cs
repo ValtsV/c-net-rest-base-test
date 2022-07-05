@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace dot_net_backend_test.Controllers
 {
@@ -14,11 +15,17 @@ namespace dot_net_backend_test.Controllers
     {
         private readonly JwtSettings _jwtSettings;
         private readonly TestDBContext _context;
+        private readonly IStringLocalizer<AccountController> _stringLocalizer;
+     
 
-        public AccountController(JwtSettings jwtSettings, TestDBContext context)
+        public AccountController(
+            JwtSettings jwtSettings, 
+            TestDBContext context, 
+            IStringLocalizer<AccountController> stringLocalizer)
         {
-            this._jwtSettings = jwtSettings;
-            this._context = context;
+            _jwtSettings = jwtSettings;
+            _context = context;
+            _stringLocalizer = stringLocalizer;
         }
 
         
@@ -27,6 +34,8 @@ namespace dot_net_backend_test.Controllers
         {
             try
             {
+
+                var message = _stringLocalizer.GetString("LoginMessage").Value ?? String.Empty;
                 var Token = new UserTokens();
 
                 var currentUser = (from user in _context.Users
@@ -47,9 +56,15 @@ namespace dot_net_backend_test.Controllers
                     }, _jwtSettings);
                 } else
                 {
-                    return BadRequest("Wrong credentials");
+                    var badCredentials = _stringLocalizer.GetString("BadCredentials").Value ?? String.Empty;
+
+                    return BadRequest(badCredentials);
                 }
-                return Ok(Token);
+                return Ok(new
+                {
+                    Token,
+                    Message = message
+                });
             }
             catch (Exception ex)
             {

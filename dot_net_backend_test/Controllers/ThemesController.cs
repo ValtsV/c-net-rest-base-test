@@ -55,7 +55,7 @@ namespace dot_net_backend_test.Controllers
         // PUT: api/Themes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
 
         public async Task<IActionResult> PutTheme(int id, Theme theme)
         {
@@ -88,7 +88,7 @@ namespace dot_net_backend_test.Controllers
         // POST: api/Themes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
 
         public async Task<ActionResult<Theme>> PostTheme(Theme theme)
         {
@@ -104,7 +104,7 @@ namespace dot_net_backend_test.Controllers
 
         // DELETE: api/Themes/5
         [HttpDelete("{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
 
         public async Task<IActionResult> DeleteTheme(int id)
         {
