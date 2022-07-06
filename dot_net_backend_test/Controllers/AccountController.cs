@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 
 namespace dot_net_backend_test.Controllers
@@ -38,13 +39,16 @@ namespace dot_net_backend_test.Controllers
             try
             {
 
+                
+
+                var query = (from user in _context.Users
+                                  where user.Name == userLogin.UserName && user.Password == userLogin.Password
+                                  select user).FirstOrDefaultAsync();
+
                 var message = _stringLocalizer.GetString("LoginMessage").Value ?? String.Empty;
                 var Token = new UserTokens();
 
-                var currentUser = (from user in _context.Users
-                                  where user.Name == userLogin.UserName && user.Password == userLogin.Password
-                                  select user).FirstOrDefault();
-
+                var currentUser = query.Result;
                 
                 if (currentUser != null)
                 {
